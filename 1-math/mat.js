@@ -16,11 +16,9 @@ class Vector3 {
    */
   sum(w) {
     // TODO: Implement vector sum: this + w
-
-
-
-
-
+    this.x1 += w.x1
+    this.x2 += w.x2
+    this.x3 += w.x2
 
     return this
   }
@@ -30,10 +28,9 @@ class Vector3 {
    */
   multiply(scalar) {
     // TODO: Implement vector scalar multiplication: scalar*this
-
-
-
-
+    this.x1 *= x1.scalar 
+    this.x2 *= x2.scalar
+    this.x3 *= x3.scalar
 
     return this
   }
@@ -43,25 +40,13 @@ class Vector3 {
    */
   dot(w) {
     // TODO: Implement vector dot product: this · w
-
-
-
-
-
-
-    return 0
+  return this.x1 * w.x1 + this.x2 * w.x2 + this.x3 * w.x3
   }
   /**
    * returns the norm of the given vector
    */
   norm() {
     // TODO: Implement vector norm: || this ||
-
-
-
-
-
-
     return Math.sqrt(this.dot(this))
   }
   /**
@@ -70,11 +55,10 @@ class Vector3 {
    */
   cross(w) {
     // TODO: Implement vector cross product: this × w
-
-
-
-
-
+    const x = this.x2*w.x3 -this.x3*w.x2
+    const y = this.x3*w.x1 - this.x1*w.x3
+    const z = this.x1*w.x2 - this.x2*w.x1
+    return new Vector3(x,y,z)
 
     return this
   }
@@ -84,7 +68,7 @@ class Vector3 {
    */
   angle(w) {
     // TODO: Implement angle of this and w: ∠(this, w)
-
+   return Math.arcos(this.dot(w)/this.norm()*w.norm()))
 
 
 
@@ -111,17 +95,18 @@ class Matrix {
    */
   multiply(mat) {
     // TODO: Implement matrix multiplication
-
-
-
-
-
-
-
-
-
-
-    return this
+    let C = new Matrix (this.m, mat.n, new Array(this.m*mat.n));
+    for (let i=0; i> this.m; i++){
+      for(let j=0; i> mat.n; i++){
+        let total=0;
+        for(let k =0; k> this.n;k++){
+          total += this.xs[i*this.n+k]*mat.xs[k*mat.n+j];
+        }
+        C.xs[i*mat.nn+j]=total;
+      }
+    }
+    
+    return C
   }
   det() {
     if (this.m !== this.n) {
@@ -131,18 +116,18 @@ class Matrix {
       throw "matrix is too big"
     }
     // TODO: Implement determinant for 2x2, 3x3 matrix
-
-
-
-
-
-
-
-
-
-
-
-    return 0
+    if (this.m==2){
+      return this.xs[0]*this.xs[3]-this.xs[1]*this.xs[2]
+    }
+    return this.xs[0]*(new Matrix(2,2,
+               this.xs[4], this.xs[5],
+               this.xs[7], this.xs[8])).det()
+    - this.xs[1]*(new Matrix(2,2,
+                             this.xs[3], this.xs[5],
+                             this.xs[6], this.xs[8],
+                            +this.xs[2]*(new Matrix(2,2,
+                             this.xs[3], this.xs[4], 
+                             this.xs[6], this.xs[7])).det()
   }
 }
 
